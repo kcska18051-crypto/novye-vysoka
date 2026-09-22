@@ -13,6 +13,16 @@ window.matchMedia('(min-width: 761px)').addEventListener('change', event => { if
 const catalog = document.querySelector('#catalog-form');
 const contact = document.querySelector('#catalog-contact');
 const contactLabel = document.querySelector('#contact-label');
+function setCatalogIntent(intent) {
+  const installment = intent === 'installment';
+  catalog.querySelector('[name="request"][value="' + (installment ? 'installment' : 'catalog') + '"]').checked = true;
+  document.querySelector('#catalog-form-title').textContent = installment ? 'Каталог и условия рассрочки' : 'Получить каталог';
+  catalog.querySelector('[type="submit"]').textContent = installment ? 'Запросить каталог и условия ↗' : 'Получить каталог ↗';
+  catalog.querySelector('.form-feedback').hidden = true;
+}
+catalog.addEventListener('change', event => {
+  if (event.target.name === 'request') setCatalogIntent(event.target.value);
+});
 const channels = {
   email: { label: 'Email', type: 'email', placeholder: 'name@example.ru' },
   max: { label: 'Телефон в MAX или ссылка на профиль', type: 'text', placeholder: '+7 … или https://max.ru/u/…' },
@@ -59,7 +69,7 @@ document.querySelectorAll('form').forEach(form => {
     const feedback = form.querySelector('.form-feedback');
     feedback.textContent = form.id === 'tour-form'
       ? (form.elements.intent.value === 'video' ? 'Демонстрация запроса видео участка. Заявка не отправлена, видео не высылается. В рабочей версии команда уточнит участок и способ передачи записи.' : 'Демонстрация записи на экскурсию. Заявка не отправлена, поездка не назначена. В рабочей версии команда свяжется с вами для согласования визита.')
-      : 'Демонстрация запроса каталога — подборки участков. Заявка не отправлена, материалы не высылаются. Выбранный канал будет использован в рабочей версии; формат и срок выдачи ещё согласуются.';
+      : (form.elements.request.value === 'installment' ? 'Демонстрация запроса каталога и условий рассрочки. ' : 'Демонстрация запроса каталога — подборки участков. ') + 'Заявка не отправлена, материалы не высылаются. Выбранный канал будет использован в рабочей версии; формат и срок выдачи ещё согласуются.';
     feedback.hidden = false;
     feedback.focus({ preventScroll: true });
     feedback.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth', block: 'nearest' });
@@ -81,6 +91,8 @@ tourForm.addEventListener('change', event => { if(event.target.name === 'intent'
 document.addEventListener('click', event => {
   const intentLink = event.target.closest('[data-tour-intent]');
   if (intentLink) setTourIntent(intentLink.dataset.tourIntent);
+  const catalogLink = event.target.closest('a[href="#catalog-form"]');
+  if (catalogLink) setCatalogIntent(catalogLink.dataset.catalogIntent);
   const clear = event.target.closest('[data-clear-selection]');
   if (!clear) return;
   const prefix = clear.dataset.clearSelection;

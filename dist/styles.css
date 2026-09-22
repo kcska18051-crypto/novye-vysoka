@@ -29,3 +29,26 @@
 /* Fix intrinsic grid/aspect-ratio overflow at narrow widths. */
 .photo-slot{width:100%;max-width:100%}.photo-slot figcaption{min-width:0;overflow-wrap:anywhere}.hero-copy>*,.split>*,.benefits>*,.location-grid>*,.location-visuals>*,.form-layout>*{min-width:0}.location-visuals{grid-template-columns:minmax(0,1fr)}#tour-form,#catalog-form{scroll-margin-top:14px}.overview-choice{display:none}
 @media(max-width:760px){.hero-copy{gap:16px}.hero{padding-top:24px}.hero .eyebrow{margin-bottom:14px;font-size:10px}.hero h1{font-size:clamp(38px,10vw,46px)}.hero-details .lead{font-size:16px;line-height:1.5}.hero-details .actions{margin-top:18px}.hero-details>.text-link{margin-top:14px}.hero-panorama{margin-top:22px}.benefits,.split,.location-grid,.form-layout{grid-template-columns:minmax(0,1fr)}#plot-picker.overview-mode #demo-plan{height:auto;aspect-ratio:900/480}#plot-picker.overview-mode #demo-plan .plot text{display:none}#plot-picker.overview-mode #demo-plan .district text{font-size:34px}#plot-picker.overview-mode #demo-plan .landmark{font-size:27px}#plot-picker.overview-mode #demo-plan .road-label{font-size:22px}.overview-mode .overview-choice{display:grid;gap:9px;margin-top:18px}.overview-choice p{font-size:14px;margin-bottom:5px}.overview-choice button{display:flex;flex-direction:column;gap:4px;text-align:left;min-height:60px;border:1px solid #9da99b;background:#e4ebdc;color:var(--ink);padding:12px 15px;border-radius:3px}.overview-choice button span{font-size:13px}.overview-choice button strong{font-size:15px}.quarter-buttons button{min-height:48px}}
+
+/* Version 07: a shorter path to plots, visible quarter prices and clear request intent. */
+.about-compact{padding-block:48px}.about-compact .large-copy{font-size:20px}.about-compact .tags{margin-top:20px}
+.quarter-buttons{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin:0 0 16px}
+.quarter-buttons button{min-width:0;display:flex;flex-direction:column;align-items:flex-start;text-align:left;gap:16px;padding:24px;border-radius:2px;transition:background .15s}
+.quarter-buttons .all-quarters{grid-column:1/-1;justify-self:start;display:block;padding:10px 18px;min-height:44px}
+.quarter-name{font-size:18px}.quarter-price{font:clamp(22px,2.1vw,31px)/1.2 var(--serif);font-weight:400;overflow-wrap:anywhere}.quarter-action{font-size:13px;text-decoration:underline;text-underline-offset:4px}
+#quarter-summary{min-height:0;margin:12px 0 22px;font-size:14px;color:var(--muted)}
+.price-note{max-width:760px}.plan-warning{padding:16px 20px}.plan-warning p{font-size:13px;line-height:1.5}
+.status-cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px}
+.catalog-preview{margin:30px 0 0;padding:26px;border:1px solid var(--line);background:var(--cream);min-height:0}
+.catalog-preview figcaption{max-width:none;display:flex;flex-direction:column;gap:8px;margin-bottom:22px}
+.catalog-preview figcaption strong{font:27px/1.2 var(--serif)}.catalog-preview figcaption span{font-size:12px;color:var(--muted)}
+.catalog-sample-row{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:18px 0;border-top:1px solid #c1c8b8;font-size:13px}
+.catalog-sample-row div{display:flex;flex-direction:column;gap:5px}.catalog-sample-row strong{font-size:15px}.catalog-sample-row>span{color:var(--muted)}
+.catalog-preview>.small{line-height:1.5}.catalog-intent{margin:20px 0}.catalog-intent .channel-options label{flex:1 1 auto}
+@media(max-width:760px){
+  .about-compact{padding-block:36px}.about-compact .split{gap:20px}.about-compact .large-copy{font-size:18px}
+  .quarter-buttons{grid-template-columns:minmax(0,1fr);gap:10px}.quarter-buttons button{padding:18px;gap:10px}.quarter-buttons .all-quarters{min-height:48px}
+  .quarter-name{font-size:16px}.quarter-price{font-size:27px}.quarter-action{font-size:12px}.price-note{font-size:12px}
+  .status-cards{grid-template-columns:minmax(0,1fr)}.catalog-preview{padding:20px}.catalog-sample-row{flex-direction:column;align-items:flex-start;gap:8px}
+  .offer a{white-space:normal}.catalog-intent .channel-options{flex-direction:column}
+}
