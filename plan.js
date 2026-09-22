@@ -68,16 +68,22 @@
   svg.addEventListener('keydown',event=>{if((event.key==='Enter'||event.key===' ')&&event.target.matches('[data-zone],[data-plot]')){event.preventDefault();event.target.dispatchEvent(new MouseEvent('click',{bubbles:true}));}});
   root.querySelector('#free-only').addEventListener('change',event=>{state.free=event.target.checked;render();});
   card.addEventListener('keydown',event=>{if(event.key==='Escape'){state.selected=null;render();root.querySelector('[data-view="'+state.view+'"]').focus();}});
+  let catalogPlanContext = null;
   document.addEventListener('click', event => {
-    const link = event.target.closest('a[href="#catalog-form"], a[href="#tour-form"]');
+    const link = event.target.closest('[data-open-catalog], a[href="#catalog-form"], a[href="#tour-form"]');
     if (!link) return;
-    const prefix = link.getAttribute('href') === '#catalog-form' ? 'catalog' : 'tour';
+    const prefix = link.matches('[data-open-catalog], a[href="#catalog-form"]') ? 'catalog' : 'tour';
+    if (prefix === 'catalog') {
+      const context = state.quarter + ':' + (state.selected || '');
+      if (catalogPlanContext === context) return;
+      catalogPlanContext = context;
+    }
     const plot = data.plots.find(p => p.id === state.selected);
     const q = plot ? quarter(plot.quarter) : quarter(state.quarter);
     document.querySelector('#' + prefix + '-selection').value = plot ? q.name + ' · ' + plot.id + ' (условный участок)' : q ? q.name + ' · участок не выбран' : 'Участок пока не выбран';
     if(prefix === 'catalog') document.querySelector('#territory').value = q ? q.name : 'Пока выбираю';
     document.querySelector('#' + prefix + '-form .form-feedback').hidden = true;
   });
-  document.addEventListener('clear-plan-selection', () => {state.selected=null;state.quarter='all';render();});
+  document.addEventListener('clear-plan-selection', () => {state.selected=null;state.quarter='all';catalogPlanContext=null;render();});
   render();
 })();

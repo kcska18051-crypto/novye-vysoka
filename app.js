@@ -11,6 +11,49 @@ document.addEventListener('keydown', event => { if (event.key === 'Escape' && na
 window.matchMedia('(min-width: 761px)').addEventListener('change', event => { if (event.matches) closeMenu(); });
 
 const catalog = document.querySelector('#catalog-form');
+const catalogDialog = document.querySelector('#catalog-dialog');
+let catalogOpener = null;
+let restoreCatalogFocus = true;
+function openCatalog(opener, intent) {
+  catalogOpener = opener || document.activeElement;
+  restoreCatalogFocus = true;
+  closeMenu();
+  setCatalogIntent(intent);
+  if (!catalogDialog.open) catalogDialog.showModal();
+  document.body.classList.add('catalog-open');
+  catalogDialog.scrollTop = 0;
+  document.querySelector('#catalog-form-title').focus({ preventScroll: true });
+}
+function closeCatalog(restoreFocus = true) {
+  restoreCatalogFocus = restoreFocus;
+  document.body.classList.remove('catalog-open');
+  catalogDialog.close();
+}
+catalogDialog.querySelector('[data-close-catalog]').addEventListener('click', () => closeCatalog());
+catalogDialog.addEventListener('close', () => {
+  document.body.classList.remove('catalog-open');
+  if (restoreCatalogFocus && catalogOpener?.isConnected) catalogOpener.focus({ preventScroll: true });
+});
+catalogDialog.addEventListener('cancel', event => { event.preventDefault(); closeCatalog(); });
+const outsideCatalog = event => {
+  const rect = catalogDialog.getBoundingClientRect();
+  return event.clientX < rect.left || event.clientX > rect.right || event.clientY < rect.top || event.clientY > rect.bottom;
+};
+let backdropPress = false;
+catalogDialog.addEventListener('pointerdown', event => { backdropPress = event.target === catalogDialog && outsideCatalog(event); });
+catalogDialog.addEventListener('click', event => {
+  if (backdropPress && event.target === catalogDialog && outsideCatalog(event)) closeCatalog();
+  backdropPress = false;
+  if (event.target.closest('a[href="#plots"]')) {
+    closeCatalog(false);
+    requestAnimationFrame(() => document.querySelector('#plots h2').focus({ preventScroll: true }));
+  }
+});
+function openCatalogFromHash() {
+  if (['#catalog', '#catalog-form'].includes(location.hash)) openCatalog(null);
+}
+window.addEventListener('hashchange', openCatalogFromHash);
+openCatalogFromHash();
 const contact = document.querySelector('#catalog-contact');
 const contactLabel = document.querySelector('#contact-label');
 function setCatalogIntent(intent) {
@@ -91,8 +134,11 @@ tourForm.addEventListener('change', event => { if(event.target.name === 'intent'
 document.addEventListener('click', event => {
   const intentLink = event.target.closest('[data-tour-intent]');
   if (intentLink) setTourIntent(intentLink.dataset.tourIntent);
-  const catalogLink = event.target.closest('a[href="#catalog-form"]');
-  if (catalogLink) setCatalogIntent(catalogLink.dataset.catalogIntent);
+  const catalogLink = event.target.closest('[data-open-catalog], a[href="#catalog-form"]');
+  if (catalogLink) {
+    event.preventDefault();
+    openCatalog(catalogLink, catalogLink.dataset.catalogIntent);
+  }
   const clear = event.target.closest('[data-clear-selection]');
   if (!clear) return;
   const prefix = clear.dataset.clearSelection;
