@@ -31,7 +31,7 @@
     root.querySelector('#picker-catalog-link').textContent = state.selected ? 'Получить подборку с учётом выбранного участка →' : q ? 'Получить подборку по этому кварталу →' : 'Получить подборку участков →';
     root.querySelector('#quarter-summary').textContent = q
       ? `${q.description} Диапазон площадей, назначение и ВРИ ожидаются.`
-      : 'Выберите квартал выше или свободный участок на схеме. Площади, назначение и ВРИ реальных участков ещё уточняются.';
+      : 'Выберите квартал выше или свободный участок на схеме. Площади и ограничения конкретных участков уточняются по документам.';
     svg.setAttribute('viewBox',q ? `${q.bounds[0]-20} ${q.bounds[1]-30} ${q.bounds[2]+40} ${q.bounds[3]+60}` : '0 0 900 480');
     svg.innerHTML = `<rect width="900" height="480" fill="#edf0e5"/><path d="M0 0H900V75Q600 110 0 70Z" fill="#c3d3bb"/><text x="450" y="42" text-anchor="middle" class="landmark">Лес · условное расположение</text><path d="M0 435Q450 400 900 435V480H0Z" fill="#bbd6df"/><text x="450" y="466" text-anchor="middle" class="landmark">Вода · условное расположение</text><path d="M10 420H890" stroke="#c4bda9" stroke-width="14"/><text x="450" y="424" text-anchor="middle" class="road-label">Подъезд · условно</text>`;
     for (const district of data.quarters) {
