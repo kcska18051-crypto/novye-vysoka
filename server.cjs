@@ -4,7 +4,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 const root = path.join(__dirname, 'dist');
 const port = Number(process.env.PORT || 4173);
-const files = new Set(['index.html', 'styles.css', 'app.js', 'notes.html', 'plan-data.js', 'plan.js']);
+const files = new Set(['index.html', 'styles.css', 'app.js', 'notes.html', 'plan-data.js', 'plan.js', 'route-map.png']);
 http.createServer((req, res) => {
   if (req.method !== 'GET' && req.method !== 'HEAD') { res.writeHead(405); res.end(); return; }
   const pathname = new URL(req.url, 'http://localhost').pathname;
@@ -12,7 +12,7 @@ http.createServer((req, res) => {
   if (!files.has(file)) { res.writeHead(404); res.end('Not found'); return; }
   fs.readFile(path.join(root, file), (error, data) => {
     if (error) { res.writeHead(404); res.end('Not found'); return; }
-    const mime = { '.html': 'text/html; charset=utf-8', '.css': 'text/css; charset=utf-8', '.js': 'text/javascript; charset=utf-8' }[path.extname(file)];
+    const mime = { '.html': 'text/html; charset=utf-8', '.css': 'text/css; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.png': 'image/png' }[path.extname(file)];
     res.writeHead(200, { 'Content-Type': mime, 'Cache-Control': 'no-store', 'X-Content-Type-Options': 'nosniff', 'Content-Security-Policy': "default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; connect-src 'none'; form-action 'none'; frame-ancestors 'none'; base-uri 'none'" });
     res.end(req.method === 'HEAD' ? undefined : data);
   });
