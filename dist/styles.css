@@ -135,3 +135,8 @@ button.text-link{border:0;background:transparent;padding:8px 0;min-height:44px;t
 
 /* v18: keep action labels smaller than district titles */
 #plot-picker.overview-mode #demo-plan .district text.quarter-map-action{font-size:16px}
+/* Version 20: content support within the existing visual system. */
+.hero-details>.lead+p{font-size:14px;color:var(--muted);margin-top:14px;line-height:1.6}
+.distance-summary{margin-top:28px}.distance-summary .routes{margin-bottom:14px}
+.quarter-context{display:block;font-size:13px;line-height:1.5;font-weight:400;max-width:30ch}
+.lifestyle-note{margin-top:24px;max-width:900px}
